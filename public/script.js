@@ -762,7 +762,7 @@ async function initAdminPanel() {
     if (token) {
         try {
             // Проверяем валидность токена
-            const response = await fetch(`${API_BASE_URL}/auth/verify`, {
+            const response = await fetch(`${API_BASE_URL}/auth`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -827,7 +827,7 @@ async function handleAdminLogin(event) {
     const password = document.getElementById('password').value;
     
     try {
-        const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        const response = await fetch(`${API_BASE_URL}/auth`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
