@@ -17,7 +17,7 @@ module.exports = async (req, res) => {
     if (req.method === 'POST') {
         // Жестко закодированные учетные данные
         const VALID_USERNAME = 'admin';
-        const VALID_PASSWORD = 'admin123'; // Измените этот пароль!
+        const VALID_PASSWORD = 'school123'; // Измените этот пароль!
         
         try {
             // Парсим тело запроса
