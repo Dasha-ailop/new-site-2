@@ -2,7 +2,7 @@
   "name": "school-consultations",
   "version": "1.0.0",
   "scripts": {
-    "dev": "vercel dev",
+    "dev": "echo Ready",
     "start": "vercel dev"
   },
   "dependencies": {

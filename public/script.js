@@ -364,8 +364,6 @@ async function updateTimeSlots() {
                 occupiedSlotsInfo.style.color = '#28a745';
             }
         }
-        
-        console.log('Занятые слоты:', occupiedSlots);
     } catch (error) {
         console.error('Ошибка обновления слотов:', error);
         createAllTimeSlots(timeSlotsContainer, selectedTimeInput, [], true);
@@ -375,7 +373,7 @@ async function updateTimeSlots() {
 // Функция получения занятых слотов времени через API
 async function getOccupiedTimeSlots(teacher, date) {
     try {
-        const response = await fetch(`${API_BASE_URL}/bookings/occupied?teacher=${encodeURIComponent(teacher)}&date=${date}`);
+        const response = await fetch(`${API_BASE_URL}/bookings?teacher=${encodeURIComponent(teacher)}&date=${date}`);
         if (!response.ok) throw new Error('Ошибка получения занятых слотов');
         
         const data = await response.json();
@@ -533,8 +531,6 @@ async function handleBookingSubmit(event) {
     // Добавляем дополнительные данные
     bookingData.status = 'новая';
     bookingData.createdAt = new Date().toISOString();
-    
-    console.log('Данные записи:', bookingData);
     
     try {
         const response = await fetch(`${API_BASE_URL}/bookings`, {
@@ -762,7 +758,7 @@ async function initAdminPanel() {
     if (token) {
         try {
             // Проверяем валидность токена
-            const response = await fetch(`${API_BASE_URL}/auth/verify`, {
+            const response = await fetch(`${API_BASE_URL}/auth`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -827,7 +823,7 @@ async function handleAdminLogin(event) {
     const password = document.getElementById('password').value;
     
     try {
-        const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        const response = await fetch(`${API_BASE_URL}/auth`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -961,11 +957,9 @@ async function loadBookings() {
         }
         
         let bookings = await response.json();
-        console.log('Загружено записей из API:', bookings.length);
         
         // Применяем фильтры
         bookings = applyFilters(bookings);
-        console.log('Записей после фильтрации:', bookings.length);
         
         // Сохраняем отфильтрованные записи для экспорта
         window.currentFilteredBookings = bookings;
@@ -1055,8 +1049,6 @@ async function loadBookings() {
             bookingsTableBody.appendChild(row);
         });
         
-        console.log('Таблица записей заполнена:', bookings.length, 'записей');
-        
         // Добавляем обработчики для изменения статуса
         document.querySelectorAll('.status-select').forEach(select => {
             select.addEventListener('change', handleStatusChange);
@@ -1128,7 +1120,7 @@ async function handleStatusChange(event) {
     console.log('Изменение статуса записи', bookingId, 'на', newStatus);
     
     try {
-        const response = await fetch(`${API_BASE_URL}/bookings/${bookingId}`, {
+        const response = await fetch(`${API_BASE_URL}/bookings?id=${bookingId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -1180,7 +1172,7 @@ async function handleDeleteBooking(event) {
     }
     
     try {
-        const response = await fetch(`${API_BASE_URL}/bookings/${bookingId}`, {
+        const response = await fetch(`${API_BASE_URL}/bookings?id=${bookingId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`
